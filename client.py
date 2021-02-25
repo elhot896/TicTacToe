@@ -32,8 +32,8 @@ def receive_data():
             turn = True
         if data[3] == 'False':
             grid.game_over = True
-        if grid.get_cell_value(x, y) == 0:
-            grid.set_cell_value(x, y, 'X')
+        if grid.get_value(x, y) == 0:
+            grid.set_value(x, y, 'X')
 
 # run the blocking functions in a separate thread
 create_thread(receive_data)
@@ -53,7 +53,7 @@ while running:
                 if turn and not grid.game_over:
                     pos = pygame.mouse.get_pos()
                     cellX, cellY = pos[0] // 200, pos[1] // 200
-                    grid.get_mouse(cellX, cellY, player)
+                    grid.get_mouse_position(cellX, cellY, player)
                     if grid.game_over:
                         playing = 'False'
                     send_data = '{}-{}-{}-{}'.format(cellX, cellY, 'yourturn', playing).encode()
@@ -62,7 +62,7 @@ while running:
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and grid.game_over:
-                grid.clear_grid()
+                grid.clear_game()
                 grid.game_over = False
                 playing = 'True'
             elif event.key == pygame.K_ESCAPE:

@@ -23,17 +23,17 @@ while running:
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
                 if player == "X":
-                    grid.get_mouse(pos[0] // 200, pos[1] // 200, player)
+                    grid.get_mouse_position(pos[0] // 200, pos[1] // 200, player)
                 elif player == "O":
-                    grid.get_mouse(random.randint(0, 2), random.randint(0, 2), player)
-                if grid.switch_player:
+                    grid.get_mouse_position(random.randint(0, 2), random.randint(0, 2), player)
+                if grid.player_switch:
                     if player == "X":
                         player = "O"
                     else:
                         player = "X"
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and grid.game_over:
-                grid.clear_grid()
+                grid.clear_game()
                 grid.game_over = False
             elif event.key == pygame.K_ESCAPE:
                 running = False
