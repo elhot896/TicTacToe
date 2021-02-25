@@ -18,20 +18,17 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if comp_move:
-            if player == "O":
-                grid.get_mouse(random.randint(0, 2), random.randint(0, 2), player)
-                comp_move = False
 
         if event.type == pygame.MOUSEBUTTONDOWN and not grid.game_over:
             if pygame.mouse.get_pressed()[0]:
                 pos = pygame.mouse.get_pos()
                 if player == "X":
                     grid.get_mouse(pos[0] // 200, pos[1] // 200, player)
+                elif player == "O":
+                    grid.get_mouse(random.randint(0, 2), random.randint(0, 2), player)
                 if grid.switch_player:
                     if player == "X":
                         player = "O"
-                        comp_move = True
                     else:
                         player = "X"
         if event.type == pygame.KEYDOWN:
