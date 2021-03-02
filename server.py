@@ -1,15 +1,10 @@
 import pygame
-from grid import Grid
-
-import os
-
-os.environ['SDL_VIDEO_WINDOW_POS'] = '200,100'
+from grid2 import Grid
+import threading
+import socket
 
 surface = pygame.display.set_mode((600, 600))
-pygame.display.set_caption('Tic-tac-toe')
-
-
-import threading
+pygame.display.set_caption('Tic-tac-toe-SERVER')
 
 
 def thread(target):
@@ -18,13 +13,9 @@ def thread(target):
     thread.start()
 
 
-
-import socket
-
-HOST = '10.211.55.5'
+HOST = socket.gethostname()
 PORT = 65432
 connection_established = False
-conn, addr = None, None
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.bind((HOST, PORT))
@@ -86,7 +77,7 @@ while running:
             elif event.key == pygame.K_ESCAPE:
                 running = False
 
-    surface.fill((0, 0, 0))
+    surface.fill((224, 156, 18))
 
     grid.draw(surface)
 
