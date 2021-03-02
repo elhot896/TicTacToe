@@ -37,10 +37,7 @@ class Grid:
 
     def get_mouse_position(self, x, y, player):
         if self.get_value(x, y) == 0:
-            if player == "X":
-                self.set_value(x, y, "X")
-            elif player == "O":
-                self.set_value(x, y, "O")
+            self.set_value(x, y, player)
             self.check_winner(x, y, player)
 
     def is_in_bounds(self, x, y):
