@@ -13,9 +13,6 @@ class Grid:
                            ((400, 0), (400, 600))]  # second vertical line
 
         self.grid = [[0 for x in range(3)] for y in range(3)]
-        self.player_switch = True
-        # search directions  N         NW        W       SW       S       SE      E       NE
-        self.search_pos = [(0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1), (1, 0), (1, -1)]
         self.game_over = False
 
     def draw(self, surface):
@@ -38,52 +35,67 @@ class Grid:
     def get_mouse_position(self, x, y, player):
         if self.get_value(x, y) == 0:
             self.set_value(x, y, player)
-            self.check_winner(x, y, player)
+            self.check_winner()
 
-    def is_in_bounds(self, x, y):
-        return x >= 0 and x < 3 and y >= 0 and y < 3
+    def check_winner(self):
+        winX = False
+        winO = False
 
-    def check_winner(self, x, y, player):
-        count = 1
-        for index, (pos_x, pos_y) in enumerate(self.search_pos):
-            if self.is_in_bounds(pos_x + pos_x, pos_y + pos_y) and self.get_value(pos_x + pos_x, pos_y + pos_y) == player:
-                count += 1
-                xx = pos_x + pos_x
-                yy = pos_y + pos_y
-                if self.is_in_bounds(xx + pos_x, yy + pos_y) and self.get_value(xx + pos_x, yy + pos_y) == player:
-                    count += 1
-                    if count == 3:
-                        break
-                if count < 3:
-                    new_pos = 0
-                    # mapping the indices to opposite direction: 0-4 1-5 2-6 3-7 4-0 5-1 6-2 7-3
-                    if index == 0:
-                        new_pos = self.search_pos[4]  # N to S
-                    elif index == 1:
-                        new_pos = self.search_pos[5]  # NW to SE
-                    elif index == 2:
-                        new_pos = self.search_pos[6]  # W to E
-                    elif index == 3:
-                        new_pos = self.search_pos[7]  # SW to NE
-                    elif index == 4:
-                        new_pos = self.search_pos[0]  # S to N
-                    elif index == 5:
-                        new_pos = self.search_pos[1]  # SE to NW
-                    elif index == 6:
-                        new_pos = self.search_pos[2]  # E to W
-                    elif index == 7:
-                        new_pos = self.search_pos[3]  # NE to SW
+        # X's Row
 
-                    if self.is_in_bounds(pos_x + new_pos[0], pos_y + new_pos[1]) \
-                            and self.get_value(pos_x + new_pos[0], pos_y + new_pos[1]) == player:
-                        count += 1
-                        if count == 3:
-                            break
-                    else:
-                        count = 1
+        if self.get_value(0, 0) == "X" and self.get_value(1, 0) == "X" and self.get_value(2, 0) == "X":
+            winX = True
+        elif self.get_value(0, 1) == "X" and self.get_value(1, 1) == "X" and self.get_value(2, 1) == "X":
+            winX = True
+        elif self.get_value(0, 2) == "X" and self.get_value(1, 2) == "X" and self.get_value(2, 2) == "X":
+            winX = True
 
-        if count == 3:
-            print(player, 'wins!')
+        # X's Column
+
+        elif self.get_value(0, 0) == "X" and self.get_value(0, 1) == "X" and self.get_value(0, 2) == "X":
+            winX = True
+        elif self.get_value(1, 0) == "X" and self.get_value(1, 1) == "X" and self.get_value(1, 2) == "X":
+            winX = True
+        elif self.get_value(2, 0) == "X" and self.get_value(2, 1) == "X" and self.get_value(2, 2) == "X":
+            winX = True
+
+        # X's Diagonal
+
+        elif self.get_value(0, 0) == "X" and self.get_value(1, 1) == "X" and self.get_value(2, 2) == "X":
+            winX = True
+        elif self.get_value(2, 0) == "X" and self.get_value(1, 1) == "X" and self.get_value(0, 2) == "X":
+            winX = True
+
+        # O's Row
+
+        elif self.get_value(0, 0) == "O" and self.get_value(1, 0) == "O" and self.get_value(2, 0) == "O":
+            winO = True
+        elif self.get_value(0, 1) == "O" and self.get_value(1, 1) == "O" and self.get_value(2, 1) == "O":
+            winO = True
+        elif self.get_value(0, 2) == "O" and self.get_value(1, 2) == "O" and self.get_value(2, 2) == "O":
+            winO = True
+
+        # O's Column
+
+        elif self.get_value(0, 0) == "O" and self.get_value(0, 1) == "O" and self.get_value(0, 2) == "O":
+            winO = True
+        elif self.get_value(1, 0) == "O" and self.get_value(1, 1) == "O" and self.get_value(1, 2) == "O":
+            winO = True
+        elif self.get_value(2, 0) == "O" and self.get_value(2, 1) == "O" and self.get_value(2, 2) == "O":
+            winO = True
+
+        # O's Diagonal
+
+        elif self.get_value(0, 0) == "O" and self.get_value(1, 1) == "O" and self.get_value(2, 2) == "O":
+            winO = True
+        elif self.get_value(2, 0) == "O" and self.get_value(1, 1) == "O" and self.get_value(0, 2) == "O":
+            winO = True
+
+        if winX:
+            print('X wins!')
+            self.game_over = True
+        elif winO:
+            print('O wins!')
             self.game_over = True
         else:
             self.game_over = self.is_game_full()
